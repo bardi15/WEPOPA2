@@ -1,0 +1,12 @@
+<p>
+  login works!
+</p>
+
+<input [(ngModel)]="userName" />
+<!-- TODO, DECLINE BAD USERNAME -->
+
+<button (click)="onLogin()">Login</button>
+
+<div *ngIf="loginFailed">
+  Sorry, but this username is already taken
+  </div>

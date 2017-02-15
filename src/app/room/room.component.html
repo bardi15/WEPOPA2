@@ -1,0 +1,9 @@
+<h1>room : {{roomId}}</h1>
+
+<ul>
+  <li *ngFor="let txt of text">
+    {{txt}} xs
+  </li>
+</ul>
+
+<button (click)="postMessage()">postMessage</button>
