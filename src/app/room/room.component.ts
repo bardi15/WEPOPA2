@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from "../chat.service";
+import { ChatService } from '../chat.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 
@@ -10,31 +10,49 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class RoomComponent implements OnInit {
-  roomId : string;
-  text : string[];
-  constructor(private router : Router, 
-    private route: ActivatedRoute, private chatService : ChatService) { }
+  roomId: string;
+  messages: string[];
+  msg: any;
+  text: any[];
+  messageSend: string;
+  constructor(private router: Router,
+    private route: ActivatedRoute, private chatService: ChatService) { 
+      this.text = [];
+    }
 
   ngOnInit() {
-    //SIMPLE METHOD:
-    let id = this.route.snapshot.params['id'];
-    console.log(id);
+    const id = this.route.snapshot.params['id'];
     this.roomId = id;
-    // this.chatService.sendMessage(id, "hi thar");
-
-    // this.chatService.getChat().subscribe(lst => {
-    //   this.text = lst;
-    // });
-
-    //TEST:
+    this.chatService.addRoom(id);
+    this.getChat();
   }
 
-  postMessage() {
-    this.chatService.sendMessage(this.roomId, "hi thar");
+  getChat() {
+    let msg;
     this.chatService.getChat().subscribe(lst => {
-      console.log(lst);
-      this.text = lst;
-    });
+      this.clearArray();
+      // console.log('getChat OF ARRAY: ' , this.text.length);
+      for (const msgObj of lst) {
+        msg = {nick: msgObj['nick'], timestamp: msgObj['timestamp'], message: msgObj['message']}
+          this.text.push(msg);
+        };
+      });
+  }
+
+  clearArray() {
+    // console.log('LENGTH OF ARRAY: ' , this.text.length);
+    while (this.text.length > 0) {
+      this.text.pop();
+    }
+  }
+
+
+  postMessage() {
+    this.clearArray();
+    if (this.messageSend === undefined || this.messageSend.length < 1 || this.messageSend.length > 200) {
+      return;
+    }
+    this.chatService.sendMessage(this.roomId, this.messageSend);
   }
 
 }

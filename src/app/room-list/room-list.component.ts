@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from "../chat.service";
-import { Router } from "@angular/router";
+import { ChatService } from '../chat.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-room-list',
@@ -9,11 +9,12 @@ import { Router } from "@angular/router";
 })
 export class RoomListComponent implements OnInit {
 
-  constructor(private chatService: ChatService, 
+  newRoomName: string;
+  rooms: string[];
+
+  constructor(private chatService: ChatService,
     private router: Router) { }
 
-  rooms : string[];
-  newRoomName : string;
 
   ngOnInit() {
     this.chatService.getRoomList().subscribe(lst => {
@@ -23,14 +24,13 @@ export class RoomListComponent implements OnInit {
   onNewRoom() {
     if (this.newRoomName.length < 1) {
       return;
-      //TODO implement error message
+      // TODO implement error message
     }
     this.chatService.addRoom(this.newRoomName).subscribe(succeeded => {
-      if(succeeded === true) {
-        //this.newRoomName = "";
-        this.router.navigate(["rooms", this.newRoomName]);
+      if (succeeded === true) {
+        // this.newRoomName = "";
+        this.router.navigate(['rooms', this.newRoomName]);
       }
     });
-   
   }
 }

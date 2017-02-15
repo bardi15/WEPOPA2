@@ -2,8 +2,11 @@
 
 <ul>
   <li *ngFor="let txt of text">
-    {{txt}} xs
+    {{txt.nick}} : {{txt.message}} 
   </li>
 </ul>
 
-<button (click)="postMessage()">postMessage</button>
+<!--<button (click)="postMessage()">postMessage</button>-->
+
+<input [(ngModel)]="messageSend" />
+<button (click)="postMessage()">SEND MESSAGE</button>
