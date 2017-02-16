@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
-  styleUrls: ['./room.component.css']
+  styleUrls: ['./room.component.css'],
 })
 
 export class RoomComponent implements OnInit {
@@ -14,17 +14,21 @@ export class RoomComponent implements OnInit {
   messages: string[];
   msg: any;
   text: any[];
+  roomUsers: any[];
   messageSend: string;
   constructor(private router: Router,
     private route: ActivatedRoute, private chatService: ChatService) { 
       this.text = [];
+      this.roomUsers = [];
     }
 
   ngOnInit() {
+    console.log('nginit');
     const id = this.route.snapshot.params['id'];
     this.roomId = id;
-    this.chatService.addRoom(id);
+    // this.chatService.addRoom(id);
     this.getChat();
+    this.getUsers();
   }
 
   getChat() {
@@ -38,6 +42,21 @@ export class RoomComponent implements OnInit {
         };
       });
   }
+
+  getUsers() {
+    this.chatService.getUsers().subscribe(lst => {
+      console.log('room component users: ' , lst);
+      // tslint:disable-next-line:forin
+      for (const key in lst) {
+        this.roomUsers.push(lst[key]);
+      }
+    });
+  }
+  // getUsers() {
+  //   this.chatService.getUsers().subscribe(usr => {
+  //     this.roomUsers.push(usr);
+  //   });
+  // }
 
   clearArray() {
     // console.log('LENGTH OF ARRAY: ' , this.text.length);

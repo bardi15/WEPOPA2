@@ -21,15 +21,22 @@ export class RoomListComponent implements OnInit {
       this.rooms = lst;
     });
   }
+  testfunc() {
+    console.log('TEST');
+  }
   onNewRoom() {
     if (this.newRoomName.length < 1) {
       return;
       // TODO implement error message
     }
-    this.chatService.addRoom(this.newRoomName).subscribe(succeeded => {
+    this.connectToRoom(this.newRoomName);
+  }
+  connectToRoom(roomName: string) {
+    // console.log('print: connectToRoom ' , roomName);
+    this.chatService.addRoom(roomName).subscribe(succeeded => {
       if (succeeded === true) {
         // this.newRoomName = "";
-        this.router.navigate(['rooms', this.newRoomName]);
+        this.router.navigate(['rooms', roomName]);
       }
     });
   }
