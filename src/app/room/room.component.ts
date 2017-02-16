@@ -34,18 +34,23 @@ export class RoomComponent implements OnInit {
   getChat() {
     let msg;
     this.chatService.getChat().subscribe(lst => {
-      this.clearArray();
+      this.clearArray(this.text);
       // console.log('getChat OF ARRAY: ' , this.text.length);
-      for (const msgObj of lst) {
-        msg = {nick: msgObj['nick'], timestamp: msgObj['timestamp'], message: msgObj['message']}
+      for (let i = lst.length - 1; i >= 0; i--) {
+        msg = {nick: lst[i]['nick'], timestamp: lst[i]['timestamp'], message: lst[i]['message'],
+            initials: lst[i]['nick'].slice(0, 1) };
           this.text.push(msg);
         };
+      // for (const msgObj of lst) {
+      //   msg = {nick: msgObj['nick'], timestamp: msgObj['timestamp'], message: msgObj['message']}
+      //     this.text.push(msg);
+      //   };
       });
   }
 
   getUsers() {
     this.chatService.getUsers().subscribe(lst => {
-      console.log('room component users: ' , lst);
+      this.clearArray(this.roomUsers);
       // tslint:disable-next-line:forin
       for (const key in lst) {
         this.roomUsers.push(lst[key]);
@@ -58,20 +63,18 @@ export class RoomComponent implements OnInit {
   //   });
   // }
 
-  clearArray() {
+  clearArray(arr: any[]) {
     // console.log('LENGTH OF ARRAY: ' , this.text.length);
-    while (this.text.length > 0) {
-      this.text.pop();
+    while (arr.length > 0) {
+      arr.pop();
     }
   }
 
-
   postMessage() {
-    this.clearArray();
+    // this.clearArray();
     if (this.messageSend === undefined || this.messageSend.length < 1 || this.messageSend.length > 200) {
       return;
     }
     this.chatService.sendMessage(this.roomId, this.messageSend);
   }
-
 }

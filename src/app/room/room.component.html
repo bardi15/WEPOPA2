@@ -1,34 +1,19 @@
-<div class="container">
+<div class="container" >
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-6" id="left">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <span class="glyphicon glyphicon-comment"></span> Chat
+                    <span class="glyphicon glyphicon-comment"></span> {{roomId}}
                     <div class="btn-group pull-right">
-                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-chevron-down"></span>
-                        </button>
-                        <ul class="dropdown-menu slidedown">
-                            <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-refresh">
-                            </span>Refresh</a></li>
-                            <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-ok-sign">
-                            </span>Available</a></li>
-                            <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-remove">
-                            </span>Busy</a></li>
-                            <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-time"></span>
-                                Away</a></li>
-                            <li class="divider"></li>
-                            <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-off"></span>
-                                Sign Out</a></li>
-                        </ul>
                     </div>
                 </div>
                 <div class="panel-body">
                     <ul class="chat">
 
-                        <li class="left clearfix" *ngFor="let txt of text"><span class="chat-img pull-left">
-                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-                        </span>
+                        <li class="left clearfix" *ngFor="let txt of text">
+                            <span class="chat-img pull-left avatar-circle">
+                                <span class="initials">{{txt.initials}}</span>
+                            </span>
                             <div class="chat-body clearfix">
                                 <div class="header">
                                     <strong class="primary-font">{{txt.nick}}</strong> <small class="pull-right text-muted">
@@ -39,21 +24,6 @@
                                 </p>
                             </div>
                         </li>
-
-                        <!--<li class="right clearfix"><span class="chat-img pull-right">
-                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
-                        </span>
-                            <div class="chat-body clearfix">
-                                <div class="header">
-                                    <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>15 mins ago</small>
-                                    <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                            </div>
-                        </li>-->
                     </ul>
                 </div>
                 <div class="panel-footer">
@@ -67,24 +37,23 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-2" id="right">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    USERLIST
+                        <div class="btn-group pull-right">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <ul class="chat">
+                        <li class="left clearfix" *ngFor="let usr of roomUsers">
+                            <p>
+                                {{usr}}
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-
-<!--<h1>room : {{roomId}}</h1>
-
-<ul>
-  <li *ngFor="let txt of text">
-    {{txt.nick}} : {{txt.message}} 
-  </li>
-</ul>
-
-<ul>
-  <h2>Users:</h2>
-  <li *ngFor="let rm of roomUsers">
-    {{rm}}
-  </li>
-</ul>
-
-<input [(ngModel)]="messageSend" />
-<button (click)="postMessage()">SEND MESSAGE</button>-->

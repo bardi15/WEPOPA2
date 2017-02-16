@@ -22,7 +22,7 @@ export class RoomListComponent implements OnInit {
     });
   }
   testfunc() {
-    console.log('TEST');
+    console.log('TEST'); // REMOVE
   }
   onNewRoom() {
     if (this.newRoomName.length < 1) {

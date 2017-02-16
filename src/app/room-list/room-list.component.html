@@ -1,13 +1,10 @@
 <p>
-  room-list works!
+  ROOMLIST
 </p>
 
-<ul>
-  <li *ngFor="let room of rooms">
-    <!--<a [routerLink] ="['/rooms', room]">{{room}}</a>-->
+<ul class="list-group">
+  <li class="list-group-item"  *ngFor="let room of rooms">
     <a [routerLink] ="['/rooms', room]" (click)="connectToRoom(room)">{{room}}</a>
-
-      <!--<span data-dummy="{{connectToRoom(room)}}" > {{here call a function that do something with 'item' and return something new }}<span>-->
   </li>
 </ul>
 
