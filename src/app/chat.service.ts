@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ChatService {
   socket: any;
+  currUser: string;
 
   constructor() {
     this.socket = io('http://localhost:8080/');
@@ -14,6 +15,7 @@ export class ChatService {
   }
 
   login(userName: string): Observable<boolean> {
+    this.currUser = userName;
     const observable = new Observable(observer => {
       this.socket.emit('adduser', userName, succeeded => {
         // console.log('Reply received in chat service');
@@ -78,14 +80,14 @@ export class ChatService {
     this.socket.emit('users');
     const observable = new Observable(observer => {
       this.socket.on('updateusers', (room, users, ops) => {
-        console.log('service chat: ' , users, ops);
+        // console.log('service chat: ' , users, ops);
         // console.log('service length: ' , users.length, ops.length);
         // const strArr: string[] = [];
         // for (let x = 0; x < users.length; x++) {
         //   console.log('service push');
         //   strArr.push(users[x]);
         // }
-        observer.next(users);
+        observer.next({users: users, ops: ops});
       });
     });
     return observable;

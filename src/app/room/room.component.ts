@@ -16,6 +16,8 @@ export class RoomComponent implements OnInit {
   text: any[];
   roomUsers: any[];
   messageSend: string;
+  currUser: string;
+  currUserIsOp: boolean;
   constructor(private router: Router,
     private route: ActivatedRoute, private chatService: ChatService) { 
       this.text = [];
@@ -28,6 +30,8 @@ export class RoomComponent implements OnInit {
     this.roomId = id;
     this.getChat();
     this.getUsers();
+    this.currUser = this.chatService.currUser;
+    console.log('is curr op: ', this.currUserIsOp);
   }
 
   getChat() {
@@ -40,8 +44,9 @@ export class RoomComponent implements OnInit {
       // console.log('now roomname is: ' , roomName);
       // if (roomName === this.roomId) {
         for (let i = messages.length - 1; i >= 0; i--) {
-          msg = {nick: messages[i]['nick'], timestamp: messages[i]['timestamp'], message: messages[i]['message'],
-            initials: messages[i]['nick'].slice(0, 1) };
+          const nickname = messages[i]['nick'];
+          msg = {nick: nickname, timestamp: messages[i]['timestamp'], message: messages[i]['message'],
+            initials: messages[i]['nick'].slice(0, 1), currentuser: this.isCurrentUser(nickname)};
           this.text.push(msg);
         }
       // } else {
@@ -50,14 +55,55 @@ export class RoomComponent implements OnInit {
     });
   }
 
+  isCurrentUser(username: string): boolean {
+    console.log('iscrcheck:', username, this.currUser);
+    if (username === this.currUser) {
+      console.log('TTRUEE');
+      return true;
+    }
+    console.log('FALLSE');
+    return false;
+  }
+
   getUsers() {
+    let usr;
+    // let crUserIsOp: boolean;
     this.chatService.getUsers().subscribe(lst => {
+      // crUserIsOp = false;
+      const users = lst['users'];
+      const ops = lst['ops'];
+      // console.log(users.length);
+      // console.log(ops.length);
       this.clearArray(this.roomUsers);
       // tslint:disable-next-line:forin
-      for (const key in lst) {
-        this.roomUsers.push(lst[key]);
+      for (const key in ops) {
+        if (this.isCurrentUser(ops[key])) {
+          console.log('.....!!!!......', ops[key]);
+          this.currUserIsOp = true;
+          // crUserIsOp = true;
+        }
+        this.roomUsers.push(usr = {nick: ops[key], isOp: true});
       }
+      // tslint:disable-next-line:forin
+      for (const key in users) {
+        this.roomUsers.push(usr = {nick: users[key], isOp: false});
+      }
+        // for (let i = ops.length - 1; i >= 0; i--) {
+        //   usr = {nick: ops[i], isOp: true};
+        //   console.log('user: ',  usr);
+        //   this.roomUsers.push(usr);
+        // }
+        // for (let i = users.length - 1; i >= 0; i--) {
+        //   usr = {nick: users[i], isOp: false};
+        //   this.roomUsers.push(usr);
+        // }
+      // tslint:disable-next-line:forin
+      // for (const key in lst) {
+      //   this.roomUsers.push(lst[key]);
+      // }
     });
+
+    // return crUserIsOp;
   }
   clearArray(arr: any[]) {
     while (arr.length > 0) {

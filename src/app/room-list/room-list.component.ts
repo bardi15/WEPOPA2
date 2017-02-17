@@ -20,6 +20,7 @@ export class RoomListComponent implements OnInit {
     this.chatService.getRoomList().subscribe(lst => {
       this.rooms = lst;
     });
+    console.log('usernmae current test roomlist: ', this.chatService.currUser);
   }
 
   onNewRoom() {
