@@ -31,7 +31,7 @@ export class RoomComponent implements OnInit {
     this.getChat();
     this.getUsers();
     this.currUser = this.chatService.currUser;
-    console.log('is curr op: ', this.currUserIsOp);
+    // console.log('is curr op: ', this.currUserIsOp);
   }
 
   getChat() {
@@ -56,13 +56,21 @@ export class RoomComponent implements OnInit {
   }
 
   isCurrentUser(username: string): boolean {
-    console.log('iscrcheck:', username, this.currUser);
+    // console.log('iscrcheck:', username, this.currUser);
     if (username === this.currUser) {
-      console.log('TTRUEE');
+      // console.log('TTRUEE');
       return true;
     }
-    console.log('FALLSE');
+    // console.log('FALLSE');
     return false;
+  }
+
+  kick(username: string) {
+    this.chatService.kickUser(this.roomId, username);
+  }
+
+  ban(username: string) {
+    this.chatService.banUser(this.roomId, username);
   }
 
   getUsers() {
@@ -78,29 +86,20 @@ export class RoomComponent implements OnInit {
       // tslint:disable-next-line:forin
       for (const key in ops) {
         if (this.isCurrentUser(ops[key])) {
-          console.log('.....!!!!......', ops[key]);
           this.currUserIsOp = true;
-          // crUserIsOp = true;
         }
         this.roomUsers.push(usr = {nick: ops[key], isOp: true});
       }
+
       // tslint:disable-next-line:forin
       for (const key in users) {
         this.roomUsers.push(usr = {nick: users[key], isOp: false});
       }
-        // for (let i = ops.length - 1; i >= 0; i--) {
-        //   usr = {nick: ops[i], isOp: true};
-        //   console.log('user: ',  usr);
-        //   this.roomUsers.push(usr);
-        // }
-        // for (let i = users.length - 1; i >= 0; i--) {
-        //   usr = {nick: users[i], isOp: false};
-        //   this.roomUsers.push(usr);
-        // }
-      // tslint:disable-next-line:forin
-      // for (const key in lst) {
-      //   this.roomUsers.push(lst[key]);
-      // }
+
+      if (!this.roomUsers.some(x => x['nick'] === this.currUser)) {
+          this.removeFromRoom();
+        }
+
     });
 
     // return crUserIsOp;
@@ -116,10 +115,14 @@ export class RoomComponent implements OnInit {
       return;
     }
     this.chatService.sendMessage(this.roomId, this.messageSend);
-
     this.messageSend = '';
   }
 
+  removeFromRoom() {
+    const msg = {nick: 'SERVER', timestamp: '', message: 'YOU HAVE BEEN REMOVED FROM THIS CHATROOM',
+        initials: 'S', currentuser: ''};
+    this.text.push(msg);
+  }
 
   leaveRoom() {
     this.chatService.leaveRoom(this.roomId);
@@ -127,7 +130,6 @@ export class RoomComponent implements OnInit {
   }
 
   privateMsg(username: string) {
-    // this.chatService.leaveRoom(this.roomId);
-    this.router.navigate(['privatemsg', username]); // PLACEHOLDER
+    this.router.navigate(['privatemsg', username]);
   }
 }

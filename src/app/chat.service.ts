@@ -36,7 +36,7 @@ export class ChatService {
           }
         }
         observer.next(strArr);
-      })
+      });
     });
     return obs;
   }
@@ -93,17 +93,33 @@ export class ChatService {
     return observable;
   }
 
+  getAllUsers(): Observable<string[]> {
+    this.socket.emit('users');
+    const observable = new Observable(observer => {
+      this.socket.on('userlist', lst => {
+        const strArr: string[] = [];
+        for (const x in lst) {
+          if (lst.hasOwnProperty(x)) {
+            strArr.push(x);
+          }
+        }
+        observer.next(strArr);
+      });
+    });
+    return observable;
+  }
+
+  getBannedUsers(): Observable<any> {
+    const observable = new Observable(observer => {
+      this.socket.on('banned', (room, users, socket) => {
+        console.log(room, users, socket);
+        observer.next({room: users, users: users, socket: socket});
+      });
+    });
+    return observable;
+  }
+
   leaveRoom(roomName: string) {
-    // const observable = new Observable(observer => {
-    //   console.log(' leaveRoom in service', roomName);
-    //   // TODO validate roomName
-    //   this.socket.emit('partroom', roomName);
-    //   //  {
-    //   //   console.log('emitting in leaveroom in service');
-    //   //     // observer.next(a);
-    //   // };
-    // });
-    // return observable;
     this.socket.emit('partroom', roomName); // BÆTA VIÐ Observable ??????
   }
 
@@ -137,6 +153,26 @@ export class ChatService {
       });
     });
     return observable;
+  }
+
+  kickUser(_roomName: string, _user: string) {
+    const param = {
+        room : _roomName,
+        user : _user['nick']
+      };
+    this.socket.emit('kick', param, (a, b) => {
+      // console.log(a, b);
+    });
+  }
+
+  banUser(_roomName: string, _user: string) {
+    const param = {
+        room : _roomName,
+        user : _user['nick']
+      };
+    this.socket.emit('ban', param, (a, b) => {
+      // console.log(a, b);
+    });
   }
 
   // disconnect() {

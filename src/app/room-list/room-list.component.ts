@@ -11,16 +11,21 @@ export class RoomListComponent implements OnInit {
 
   newRoomName: string;
   rooms: string[];
-
+  currUser: string;
+  // bannedUsers: any[];
   constructor(private chatService: ChatService,
-    private router: Router) { }
+    private router: Router) {
+      this.currUser = this.chatService.currUser;
+      // this.bannedUsers = [];
+    }
 
 
   ngOnInit() {
     this.chatService.getRoomList().subscribe(lst => {
       this.rooms = lst;
     });
-    console.log('usernmae current test roomlist: ', this.chatService.currUser);
+    // this.getBannedUsers();
+    // console.log('usernmae current test roomlist: ', this.chatService.currUser);
   }
 
   onNewRoom() {
@@ -40,9 +45,35 @@ export class RoomListComponent implements OnInit {
     });
   }
 
-  // disconnect() {
-  //   // console.log('disconnect in componenet');
-  //   // this.chatService.disconnectFromServer();
-  //   this.router.navigate(['login']);
+  // getBannedUsers () {
+  //   // let ban;
+  //   console.log('getBannedUsers');
+  //   this.chatService.getBannedUsers().subscribe(lst => {
+  //     // tslint:disable-next-line:forin
+  //     for (const key in lst) {
+  //       console.log('getBannedUsers', key);
+  //     }
+  //   })
+  // }
+
+  // getChat() {
+  //   let msg;
+  //   this.chatService.getChat().subscribe(lst => {
+  //     this.clearArray(this.text);
+  //     // console.log('getChat', lst);
+  //     const roomName = lst['roomName'];
+  //     const messages = lst['messages'];
+  //     // console.log('now roomname is: ' , roomName);
+  //     // if (roomName === this.roomId) {
+  //       for (let i = messages.length - 1; i >= 0; i--) {
+  //         const nickname = messages[i]['nick'];
+  //         msg = {nick: nickname, timestamp: messages[i]['timestamp'], message: messages[i]['message'],
+  //           initials: messages[i]['nick'].slice(0, 1), currentuser: this.isCurrentUser(nickname)};
+  //         this.text.push(msg);
+  //       }
+  //     // } else {
+  //       // this.router.navigate(['rooms', roomName]); // ATH?? GÓÐ LAUSN ??
+  //     // }
+  //   });
   // }
 }

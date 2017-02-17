@@ -13,13 +13,16 @@ export class PrivateMessagesComponent implements OnInit {
   messageSend: string;
   userSend: string;
   myData = new Array<string>();
+  allUsers = [];
 
   constructor(private router: Router,
     private route: ActivatedRoute, private chatService: ChatService) { 
       this.text = [];
+      this.allUsers = [];
     }
 
   ngOnInit() {
+    this.getAllUsers();
     const id = this.route.snapshot.params['id'];
     // this.userSend = id;
     this.addToUserList(id);
@@ -65,6 +68,15 @@ export class PrivateMessagesComponent implements OnInit {
     if (!this.myData.some((x => x === username))) {
       this.myData.push(username);
     };
+  }
+
+  getAllUsers() {
+    this.chatService.getAllUsers().subscribe(lst => {
+      // tslint:disable-next-line:forin
+      for (const key in lst) {
+        this.allUsers.push(lst[key]);
+      }
+    });
   }
 
 

@@ -49,23 +49,13 @@
                     <ul class="chat">
                         <li class="left clearfix" *ngFor="let usr of roomUsers">
                             <p *ngIf="usr.isOp === true">
-                               <a (click)="privateMsg(usr)" class="operator">{{usr.nick}} (OP)</a>
+                               <a (click)="privateMsg(usr.nick)" class="operator">{{usr.nick}} (OP)</a>
                             </p>
                             <p *ngIf="usr.isOp === false">
-                               <a (click)="privateMsg(usr)">{{usr.nick}}</a>
+                               <a (click)="privateMsg(usr.nick)">{{usr.nick}}</a>
                                <span *ngIf="currUserIsOp === true" class="btn-group">
-                                     <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Action <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Action</a></li>
-                                        <li><a href="#">Another action</a></li>
-                                        <li><a href="#">Something else here</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="#">Separated link</a></li>
-                                    </ul>
-                                <!--<button *ngIf="currUserIsOp === true" class="label label-primary">Kick</button>
-                                <button *ngIf="currUserIsOp === true" class="label label-primary">Kick</button>-->
+                                <button class="label label-warning" (click)="kick(usr)">Kick</button>
+                                <button class="label label-danger" (click)="ban(usr)">Ban</button>
                                </span>
                             </p>
                         </li>
