@@ -41,7 +41,7 @@ export class ChatService {
 
   addRoom(roomName: string): Observable<boolean> {
     const observable = new Observable(observer => {
-      console.log(' i am in chatservice addRoom');
+      // console.log(' i am in chatservice addRoom');
       // TODO validate roomName
       const param = {
         room : roomName
@@ -61,13 +61,15 @@ export class ChatService {
     this.socket.emit('sendmsg', param);
   }
   getChat(): Observable<any> {
+    let response;
     const observable = new Observable(observer => {
       this.socket.on('updatechat', (room, messageHistory) => {
-        const strArr: string[] = [];
-        for (let x = 0; x < messageHistory.length; x++) {
-          strArr.push(messageHistory[x]);
-        }
-        observer.next(strArr);
+        // const strArr: string[] = [];
+        // for (let x = 0; x < messageHistory.length; x++) {
+        //   strArr.push(messageHistory[x]);
+        // }
+        // observer.next([room, messageHistory]);
+        observer.next(response = {roomName: room, messages: messageHistory});
       });
     });
     return observable;
@@ -86,6 +88,20 @@ export class ChatService {
       });
     });
     return observable;
+  }
+
+  leaveRoom(roomName: string) {
+    // const observable = new Observable(observer => {
+    //   console.log(' leaveRoom in service', roomName);
+    //   // TODO validate roomName
+    //   this.socket.emit('partroom', roomName);
+    //   //  {
+    //   //   console.log('emitting in leaveroom in service');
+    //   //     // observer.next(a);
+    //   // };
+    // });
+    // return observable;
+    this.socket.emit('partroom', roomName); // BÆTA VIÐ Observable ??????
   }
 
   //   getUsers() {

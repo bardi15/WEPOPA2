@@ -26,7 +26,6 @@ export class RoomComponent implements OnInit {
     console.log('nginit');
     const id = this.route.snapshot.params['id'];
     this.roomId = id;
-    // this.chatService.addRoom(id);
     this.getChat();
     this.getUsers();
   }
@@ -35,17 +34,20 @@ export class RoomComponent implements OnInit {
     let msg;
     this.chatService.getChat().subscribe(lst => {
       this.clearArray(this.text);
-      // console.log('getChat OF ARRAY: ' , this.text.length);
-      for (let i = lst.length - 1; i >= 0; i--) {
-        msg = {nick: lst[i]['nick'], timestamp: lst[i]['timestamp'], message: lst[i]['message'],
-            initials: lst[i]['nick'].slice(0, 1) };
+      // console.log('getChat', lst);
+      const roomName = lst['roomName'];
+      const messages = lst['messages'];
+      // console.log('now roomname is: ' , roomName);
+      // if (roomName === this.roomId) {
+        for (let i = messages.length - 1; i >= 0; i--) {
+          msg = {nick: messages[i]['nick'], timestamp: messages[i]['timestamp'], message: messages[i]['message'],
+            initials: messages[i]['nick'].slice(0, 1) };
           this.text.push(msg);
-        };
-      // for (const msgObj of lst) {
-      //   msg = {nick: msgObj['nick'], timestamp: msgObj['timestamp'], message: msgObj['message']}
-      //     this.text.push(msg);
-      //   };
-      });
+        }
+      // } else {
+        // this.router.navigate(['rooms', roomName]); // ATH?? GÓÐ LAUSN ??
+      // }
+    });
   }
 
   getUsers() {
@@ -57,24 +59,25 @@ export class RoomComponent implements OnInit {
       }
     });
   }
-  // getUsers() {
-  //   this.chatService.getUsers().subscribe(usr => {
-  //     this.roomUsers.push(usr);
-  //   });
-  // }
-
   clearArray(arr: any[]) {
-    // console.log('LENGTH OF ARRAY: ' , this.text.length);
     while (arr.length > 0) {
       arr.pop();
     }
   }
 
   postMessage() {
-    // this.clearArray();
     if (this.messageSend === undefined || this.messageSend.length < 1 || this.messageSend.length > 200) {
       return;
     }
     this.chatService.sendMessage(this.roomId, this.messageSend);
+
+    this.messageSend = '';
   }
+
+
+  leaveRoom() {
+    this.chatService.leaveRoom(this.roomId);
+    this.router.navigate(['rooms']);
+  }
+
 }
