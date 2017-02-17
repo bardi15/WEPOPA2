@@ -1,3 +1,5 @@
+
+
 <div class="container" >
     <div class="row">
         <div class="col-md-6" id="left">
@@ -48,7 +50,7 @@
                     <ul class="chat">
                         <li class="left clearfix" *ngFor="let usr of roomUsers">
                             <p>
-                                {{usr}}
+                               <a (click)="privateMsg(usr)">{{usr}}</a>
                             </p>
                         </li>
                     </ul>

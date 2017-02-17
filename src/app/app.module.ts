@@ -9,6 +9,7 @@ import { RoomListComponent } from './room-list/room-list.component';
 import { RoomComponent } from './room/room.component';
 import { ChatService } from './chat.service';
 import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { PrivateMessagesComponent } from './private-messages/private-messages.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
     AppComponent,
     LoginComponent,
     RoomListComponent,
-    RoomComponent
+    RoomComponent,
+    PrivateMessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +38,9 @@ import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
     }, {
       path: 'rooms/:id',
       component: RoomComponent
+    }, {
+      path: 'privatemsg/:id',
+      component: PrivateMessagesComponent
     }])
   ],
   providers: [ChatService],

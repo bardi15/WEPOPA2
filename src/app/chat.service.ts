@@ -75,6 +75,7 @@ export class ChatService {
     return observable;
   }
   getUsers(): Observable<any> {
+    this.socket.emit('users');
     const observable = new Observable(observer => {
       this.socket.on('updateusers', (room, users, ops) => {
         console.log('service chat: ' , users, ops);
@@ -103,6 +104,59 @@ export class ChatService {
     // return observable;
     this.socket.emit('partroom', roomName); // BÆTA VIÐ Observable ??????
   }
+
+// A NNAÐ SERVICE ????
+
+  sendPrvMessage(_msg: string, nick: string) {
+    const param = {
+        nick : nick,
+        message : _msg
+      };
+    this.socket.emit('privatemsg', param, (a, b) => {
+      console.log(a, b);
+    });
+    // this.socket.emit('privatemsg', param, true);
+  }
+
+// recv_privatemsg
+
+// 'recv_privatemsg', socket.username, msgObj.message)
+
+  getPrvMessage(): Observable<any> {
+    let response;
+    const observable = new Observable(observer => {
+      this.socket.on('recv_privatemsg', (userName, message) => {
+        // const strArr: string[] = [];
+        // for (let x = 0; x < messageHistory.length; x++) {
+        //   strArr.push(messageHistory[x]);
+        // }
+        // observer.next([room, messageHistory]);
+        observer.next(response = {username: userName, messages: message});
+      });
+    });
+    return observable;
+  }
+
+  // disconnect() {
+  //   console.log('disconnect in chatservice');
+  //   this.socket.emit('disconnect');
+  // }
+
+
+  // disconnectFromServer(): Observable<any> {
+  //   const observable = new Observable(observer => {
+  //     // console.log(' i am in chatservice addRoom');
+  //     // TODO validate roomName
+  //     this.socket.emit('disconnect', () => {
+  //         // observer.next(a);
+  //         // console.log('a: ' , a);
+  //     });
+  //   });
+  //   return observable;
+  // }
+
+
+
 
   //   getUsers() {
   //   const observable = new Observable(observer => {

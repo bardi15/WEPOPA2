@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -23,7 +23,7 @@ export class RoomComponent implements OnInit {
     }
 
   ngOnInit() {
-    console.log('nginit');
+    // console.log('nginit');
     const id = this.route.snapshot.params['id'];
     this.roomId = id;
     this.getChat();
@@ -80,4 +80,8 @@ export class RoomComponent implements OnInit {
     this.router.navigate(['rooms']);
   }
 
+  privateMsg(username: string) {
+    // this.chatService.leaveRoom(this.roomId);
+    this.router.navigate(['privatemsg', username]); // PLACEHOLDER
+  }
 }

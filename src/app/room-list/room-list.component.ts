@@ -21,9 +21,7 @@ export class RoomListComponent implements OnInit {
       this.rooms = lst;
     });
   }
-  testfunc() {
-    console.log('TEST'); // REMOVE
-  }
+
   onNewRoom() {
     if (this.newRoomName.length < 1) {
       return;
@@ -40,4 +38,10 @@ export class RoomListComponent implements OnInit {
       }
     });
   }
+
+  // disconnect() {
+  //   // console.log('disconnect in componenet');
+  //   // this.chatService.disconnectFromServer();
+  //   this.router.navigate(['login']);
+  // }
 }

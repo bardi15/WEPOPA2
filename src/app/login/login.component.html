@@ -5,7 +5,7 @@
 <input [(ngModel)]="userName" />
 <!-- TODO, DECLINE BAD USERNAME -->
 
-<button (click)="onLogin()">Login</button>
+<button (click)="onLogin()" (keydown)="onLogin()">Login</button>
 
 <div *ngIf="loginFailed">
   Sorry, but this username is already taken
