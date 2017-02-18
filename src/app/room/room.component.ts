@@ -19,7 +19,7 @@ export class RoomComponent implements OnInit {
   currUser: string;
   currUserIsOp: boolean;
   constructor(private router: Router,
-    private route: ActivatedRoute, private chatService: ChatService) { 
+    private route: ActivatedRoute, private chatService: ChatService) {
       this.text = [];
       this.roomUsers = [];
     }

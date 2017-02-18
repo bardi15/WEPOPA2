@@ -16,7 +16,7 @@ export class PrivateMessagesComponent implements OnInit {
   allUsers = [];
 
   constructor(private router: Router,
-    private route: ActivatedRoute, private chatService: ChatService) { 
+    private route: ActivatedRoute, private chatService: ChatService) {
       this.text = [];
       this.allUsers = [];
     }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     this.chatService.login(this.userName).subscribe(succeeded => {
       console.log('succeess!');
       this.loginFailed = !succeeded;
-      if(succeeded === true) {
+      if (succeeded === true) {
         this.router.navigate(['/rooms']);
         // TODO Redirect to RoomList componenet!
       }
