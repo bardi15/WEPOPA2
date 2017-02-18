@@ -3,8 +3,8 @@
 </p>
 
 <ul class="list-group">
-  <li class="list-group-item"  *ngFor="let room of rooms">
-    <a [routerLink] ="['/rooms', room]" (click)="connectToRoom(room)">{{room}}</a>
+  <li class="list-group-item" *ngFor="let room of rooms">
+    <a [routerLink]="['/rooms', room]" (click)="connectToRoom(room)">{{room}}</a>
   </li>
 </ul>
 

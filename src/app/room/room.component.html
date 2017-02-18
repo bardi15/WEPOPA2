@@ -1,6 +1,4 @@
-
-
-<div class="container" >
+<div class="container">
     <div class="row">
         <div class="col-md-6" id="left">
             <div class="panel panel-primary">
@@ -21,7 +19,7 @@
                                         <span class="glyphicon glyphicon-time"></span>{{txt.timestamp}}</small>
                                 </div>
                                 <p>
-                                  {{txt.message}}
+                                    {{txt.message}}
                                 </p>
                             </div>
                         </li>
@@ -29,7 +27,8 @@
                 </div>
                 <div class="panel-footer">
                     <div class="input-group">
-                        <input [(ngModel)]="messageSend" id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                        <input [(ngModel)]="messageSend" id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..."
+                        />
                         <span class="input-group-btn">
                             <button (click)="postMessage()" class="btn btn-warning btn-sm" id="btn-chat">
                                 Send</button>
@@ -42,18 +41,18 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     USERLIST
-                        <div class="btn-group pull-right">
+                    <div class="btn-group pull-right">
                     </div>
                 </div>
                 <div class="panel-body">
                     <ul class="chat">
                         <li class="left clearfix" *ngFor="let usr of roomUsers">
                             <p *ngIf="usr.isOp === true">
-                               <a (click)="privateMsg(usr.nick)" class="operator">{{usr.nick}} (OP)</a>
+                                <a (click)="privateMsg(usr.nick)" class="operator">{{usr.nick}} (OP)</a>
                             </p>
                             <p *ngIf="usr.isOp === false">
-                               <a (click)="privateMsg(usr.nick)">{{usr.nick}}</a>
-                               <span *ngIf="currUserIsOp === true" class="btn-group">
+                                <a (click)="privateMsg(usr.nick)">{{usr.nick}}</a>
+                                <span *ngIf="currUserIsOp === true" class="btn-group">
                                 <button class="label label-warning" (click)="kick(usr)">Kick</button>
                                 <button class="label label-danger" (click)="ban(usr)">Ban</button>
                                </span>
@@ -62,7 +61,7 @@
                     </ul>
                 </div>
             </div>
-                <button (click)="leaveRoom()" class="btn btn-danger btn-sm" id="btn-chat">
+            <button (click)="leaveRoom()" class="btn btn-danger btn-sm" id="btn-chat">
                     Leave this Room</button>
         </div>
     </div>

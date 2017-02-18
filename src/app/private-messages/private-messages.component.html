@@ -1,6 +1,5 @@
 <p>
-  private-messages works!
-  {{id}}
+  private-messages works! {{id}}
 </p>
 
 <p *ngFor="let d of myData">
@@ -10,13 +9,12 @@
 <select [(ngModel)]="userSend">
   <option *ngFor="let d of myData" value={{d}}>{{d}}</option>
 </select>
-<!--userSend-->
 <input [(ngModel)]="messageSend" />
 
 <button (click)="prvmsg()">privateMsg</button>
 
 <ul class="list-group">
-  <li class="list-group-item"  *ngFor="let txt of text">
+  <li class="list-group-item" *ngFor="let txt of text">
     {{txt.user}} : {{txt.message}}
   </li>
 </ul>

@@ -11,7 +11,6 @@ import { ChatService } from './chat.service';
 import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { PrivateMessagesComponent } from './private-messages/private-messages.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
