@@ -17,12 +17,10 @@ export class PrivateMessagesComponent implements OnInit {
   // myData2 = new Array<string>();
   allUsers = new Array<string>();
   selectedUser: string;
-
   constructor(private router: Router,
     private route: ActivatedRoute, private chatService: ChatService) {
     this.text = [];
     this.allUsers = [];
-    this.currUser = this.chatService.currUser;
   }
 
   ngOnInit() {
@@ -31,12 +29,10 @@ export class PrivateMessagesComponent implements OnInit {
     this.addToUserList(id);
     this.id = id;
     this.getprvmsgs();
+    this.currUser = this.chatService.currUser;
   }
 
   prvmsg() {
-    if (this.userSend === undefined) {
-      return;
-    }
     console.log('this.userSend:', this.userSend);
     this.chatService.sendPrvMessage(this.messageSend, this.userSend);
   }
@@ -46,8 +42,10 @@ export class PrivateMessagesComponent implements OnInit {
       const username = lst['username'];
       const messages = lst['messages'];
       // this.addToUserList(username);
-      this.text.push({ user: username, message: messages });
-      this.text.reverse();
+      if (username.length > 1) {
+        this.text.push({ user: username, message: messages });
+        this.text.reverse();
+      }
     });
   }
 

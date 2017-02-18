@@ -109,12 +109,17 @@ export class ChatService {
   }
 
   leaveRoom(roomName: string) {
+    console.log('Roomname: part: ', roomName);
     this.socket.emit('partroom', roomName); // BÆTA VIÐ Observable ??????
   }
 
-  sendPrvMessage(_msg: string, nick: string) {
+  sendPrvMessage(_msg: string, _nick: string) {
+    if (_nick.length < 1) {
+      return;
+    }
+    console.log('nicklen: ',_nick.length, 'nick: ' , _nick );
     const param = {
-      nick: nick,
+      nick: _nick,
       message: _msg
     };
     this.socket.emit('privatemsg', param, (a, b) => {
