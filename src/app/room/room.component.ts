@@ -114,7 +114,7 @@ export class RoomComponent implements OnInit {
     this.router.navigate(['rooms']);
   }
 
-  privateMsg(username: string) {
-    this.router.navigate(['privatemsg', username]);
-  }
+  // privateMsg(username: string) {
+  //   this.router.navigate(['privatemsg', username]);
+  // }
 }

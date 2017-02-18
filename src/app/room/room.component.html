@@ -47,16 +47,18 @@
                 <div class="panel-body">
                     <ul class="chat">
                         <li class="left clearfix" *ngFor="let usr of roomUsers">
-                            <p *ngIf="usr.isOp === true">
-                                <a (click)="privateMsg(usr.nick)" class="operator">{{usr.nick}} (OP)</a>
-                            </p>
-                            <p *ngIf="usr.isOp === false">
-                                <a (click)="setSelectedUser(usr.nick)">{{usr.nick}}</a>
+                            <a>{{usr.nick}}</a>
+                            <span *ngIf="usr.isOp === true" class="label label-success">OP</span>
+                            <!--<a class="operator">{{usr.nick}} (OP)</a>-->
+
+                            <span *ngIf="usr.isOp === false">
+                                <!--<a>{{usr.nick}}</a>-->
                                 <span *ngIf="currUserIsOp === true" class="btn-group">
-                                <button class="label label-warning" (click)="kick(usr)">Kick</button>
-                                <button class="label label-danger" (click)="ban(usr)">Ban</button>
+                                    <button class="label label-warning" (click)="kick(usr)">Kick</button>
+                                    <button class="label label-danger" (click)="ban(usr)">Ban</button>
                                </span>
-                            </p>
+                            </span>
+                            <span *ngIf="usr.nick === currUser" class="label label-default">ME</span>
                         </li>
                     </ul>
                 </div>
