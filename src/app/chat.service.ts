@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 export class ChatService {
   socket: any;
   currUser: string;
+  selectedUser: string;
 
   constructor() {
     this.socket = io('http://localhost:8080/');
@@ -15,6 +16,7 @@ export class ChatService {
 
   login(userName: string): Observable<boolean> {
     this.currUser = userName;
+    this.selectedUser = '';
     const observable = new Observable(observer => {
       this.socket.emit('adduser', userName, succeeded => {
         observer.next(succeeded);
@@ -77,14 +79,18 @@ export class ChatService {
     return observable;
   }
 
-  getAllUsers(): Observable<string[]> {
+  serverEmitUsers() {
     this.socket.emit('users');
+  }
+
+  getAllUsers(): Observable<string[]> {
     const observable = new Observable(observer => {
       this.socket.on('userlist', lst => {
+        // console.log('lst in chatservice: ', lst);
         const strArr: string[] = [];
         for (const x in lst) {
           if (lst.hasOwnProperty(x)) {
-            strArr.push(x);
+            strArr.push(lst[x]);
           }
         }
         observer.next(strArr);

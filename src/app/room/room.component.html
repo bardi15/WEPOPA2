@@ -1,3 +1,5 @@
+currUser user : {{currUser}}
+
 <div class="container">
     <div class="row">
         <div class="col-md-6" id="left">
@@ -51,7 +53,7 @@
                                 <a (click)="privateMsg(usr.nick)" class="operator">{{usr.nick}} (OP)</a>
                             </p>
                             <p *ngIf="usr.isOp === false">
-                                <a (click)="privateMsg(usr.nick)">{{usr.nick}}</a>
+                                <a (click)="setSelectedUser(usr.nick)">{{usr.nick}}</a>
                                 <span *ngIf="currUserIsOp === true" class="btn-group">
                                 <button class="label label-warning" (click)="kick(usr)">Kick</button>
                                 <button class="label label-danger" (click)="ban(usr)">Ban</button>

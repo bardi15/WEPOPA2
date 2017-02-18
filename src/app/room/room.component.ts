@@ -60,9 +60,9 @@ export class RoomComponent implements OnInit {
     this.chatService.kickUser(this.roomId, username);
   }
 
-  ban(username: string) {
-    this.chatService.banUser(this.roomId, username);
-  }
+  // ban(username: string) {
+  //   this.chatService.banUser(this.roomId, username);
+  // }
 
   getUsers() {
     let usr;

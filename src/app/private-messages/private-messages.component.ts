@@ -12,13 +12,17 @@ export class PrivateMessagesComponent implements OnInit {
   text: any[];
   messageSend: string;
   userSend: string;
+  currUser: string;
   myData = new Array<string>();
-  allUsers = [];
+  // myData2 = new Array<string>();
+  allUsers = new Array<string>();
+  selectedUser: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute, private chatService: ChatService) {
     this.text = [];
     this.allUsers = [];
+    this.currUser = this.chatService.currUser;
   }
 
   ngOnInit() {
@@ -33,6 +37,7 @@ export class PrivateMessagesComponent implements OnInit {
     if (this.userSend === undefined) {
       return;
     }
+    console.log('this.userSend:', this.userSend);
     this.chatService.sendPrvMessage(this.messageSend, this.userSend);
   }
 
@@ -40,9 +45,15 @@ export class PrivateMessagesComponent implements OnInit {
     this.chatService.getPrvMessage().subscribe(lst => {
       const username = lst['username'];
       const messages = lst['messages'];
-      this.addToUserList(username);
+      // this.addToUserList(username);
       this.text.push({ user: username, message: messages });
     });
+  }
+
+  addToUserList2(username: string) {
+    if (!this.allUsers.some((x => x === username)) && username !== this.currUser) {
+      this.allUsers.push(username);
+    };
   }
 
   addToUserList(username: string) {
@@ -52,11 +63,15 @@ export class PrivateMessagesComponent implements OnInit {
   }
 
   getAllUsers() {
+    this.chatService.serverEmitUsers();
     this.chatService.getAllUsers().subscribe(lst => {
-      // tslint:disable-next-line:forin
+      this.chatService.serverEmitUsers();
+      // console.log('prvsmes:' , lst);
       for (const key in lst) {
-        this.allUsers.push(lst[key]);
+        // this.allUsers.push(lst[key]);
+        this.addToUserList(lst[key]);
       }
     });
   }
+
 }

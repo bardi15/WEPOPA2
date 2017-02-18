@@ -8,7 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { RoomListComponent } from './room-list/room-list.component';
 import { RoomComponent } from './room/room.component';
 import { ChatService } from './chat.service';
-import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
+// import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { PrivateMessagesComponent } from './private-messages/private-messages.component';
 
 @NgModule({
@@ -23,7 +23,7 @@ import { PrivateMessagesComponent } from './private-messages/private-messages.co
     BrowserModule,
     FormsModule,
     HttpModule,
-    AlertModule.forRoot(),
+    // AlertModule.forRoot(),
     RouterModule.forRoot([{
       path: '',
       redirectTo: 'login',
