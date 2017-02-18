@@ -1,12 +1,28 @@
-<p>
-  login works!
-</p>
+<div class="container">
+  <div>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        LOGIN
+        <div class="btn-group pull-right">
+        </div>
+      </div>
+      <div class="panel-body">
 
-<input [(ngModel)]="userName" />
-<!-- TODO, DECLINE BAD USERNAME -->
+          <p>
+            ENTER USERNAME:
+          </p>
 
-<button (click)="onLogin()" (keydown)="onLogin()">Login</button>
+          <input [(ngModel)]="userName" />
+          <!-- TODO, DECLINE BAD USERNAME -->
 
-<div *ngIf="loginFailed">
-  Sorry, but this username is already taken
+          <button (click)="onLogin()" (keydown)="onLogin()">Login</button>
+
+          <div *ngIf="loginFailed">
+            Sorry, but this username is already taken
+          </div>
+
+
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,4 +1,4 @@
-<p>
+<!--<p>
   ROOMLIST
 </p>
 
@@ -13,4 +13,39 @@
 
 
 <button (click)="disconnect()" class="btn btn-danger btn-sm" id="btn-chat">
-    disconnect</button>
+    disconnect</button>-->
+
+
+<div class="container">
+  <div>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        ROOMLIST
+        <div class="btn-group pull-right">
+        </div>
+      </div>
+      <div class="panel-body">
+        <ul class="chat">
+          <li *ngFor="let room of rooms">
+            <div class="chat-body clearfix">
+              <div class="header">
+                <a [routerLink]="['/rooms', room]" (click)="connectToRoom(room)">{{room}}</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="panel-footer">
+        <div class="input-group">
+          <input [(ngModel)]="newRoomName" id="input-group-addon" type="text" class="form-control input-sm" placeholder="New room name..." />
+          <span class="input-group-btn">
+            <button (click)="onNewRoom()" class="btn btn-warning btn-sm" id="btn-chat">ADD NEW ROOM</button>
+          </span>
+          <span class="input-group-btn">
+            <button (click)="disconnect()" class="btn btn-danger btn-sm" id="btn-chat">DISCONNECT</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

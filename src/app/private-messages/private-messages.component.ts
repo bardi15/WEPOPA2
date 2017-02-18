@@ -47,14 +47,15 @@ export class PrivateMessagesComponent implements OnInit {
       const messages = lst['messages'];
       // this.addToUserList(username);
       this.text.push({ user: username, message: messages });
+      this.text.reverse();
     });
   }
 
-  addToUserList2(username: string) {
-    if (!this.allUsers.some((x => x === username)) && username !== this.currUser) {
-      this.allUsers.push(username);
-    };
-  }
+  // addToUserList2(username: string) {
+  //   if (!this.allUsers.some((x => x === username)) && username !== this.currUser) {
+  //     this.allUsers.push(username);
+  //   };
+  // }
 
   addToUserList(username: string) {
     if (!this.myData.some((x => x === username))) {
