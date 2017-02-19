@@ -7,21 +7,14 @@
         </div>
       </div>
       <div class="panel-body">
-
           <p>
             ENTER USERNAME:
           </p>
-
           <input [(ngModel)]="userName" />
-          <!-- TODO, DECLINE BAD USERNAME -->
-
           <button (click)="onLogin()" (keydown)="onLogin()">Login</button>
-
           <div *ngIf="loginFailed">
             Sorry, but this username is already taken
           </div>
-
-
       </div>
     </div>
   </div>

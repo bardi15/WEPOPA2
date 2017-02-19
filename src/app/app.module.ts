@@ -38,7 +38,7 @@ import { PrivateMessagesComponent } from './private-messages/private-messages.co
       path: 'rooms/:id',
       component: RoomComponent
     }, {
-      path: 'privatemsg/:id',
+      path: 'privatemsg',
       component: PrivateMessagesComponent
     }])
   ],

@@ -1,0 +1,7 @@
+.extra { 
+    display: none;
+}
+
+a:hover .extra {
+    display: inline-block;
+}

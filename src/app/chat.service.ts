@@ -29,13 +29,17 @@ export class ChatService {
     const obs = new Observable(observer => {
       this.socket.emit('rooms');
       this.socket.on('roomlist', (lst) => {
-        const strArr: string[] = [];
+        console.log(lst);
+        const rmArr: any[] = [];
         for (const x in lst) {
           if (lst.hasOwnProperty(x)) {
-            strArr.push(x);
+            const val = lst[x];
+            const rooms = {name: x, banned: val['banned'], locked: val['locked'], ops: val['ops'], password: val['password'], topic: val['topic'], users: val['users']};
+            console.log(rooms);
+            rmArr.push(rooms);
           }
         }
-        observer.next(strArr);
+        observer.next(rmArr);
       });
     });
     return obs;
@@ -64,6 +68,10 @@ export class ChatService {
     let response;
     const observable = new Observable(observer => {
       this.socket.on('updatechat', (room, messageHistory) => {
+        for (const x in room) {
+          console.log('x: ', x, 'lsx: ', room[x]);
+        }
+        console.log('getChat service : ', room);
         observer.next(response = { roomName: room, messages: messageHistory });
       });
     });
@@ -73,7 +81,7 @@ export class ChatService {
     this.socket.emit('users');
     const observable = new Observable(observer => {
       this.socket.on('updateusers', (room, users, ops) => {
-        observer.next({ users: users, ops: ops });
+        observer.next({ room: room, users: users, ops: ops });
       });
     });
     return observable;
@@ -81,6 +89,10 @@ export class ChatService {
 
   serverEmitUsers() {
     this.socket.emit('users');
+  }
+
+  disconnect() {
+    this.socket.emit('disconnect');
   }
 
   getAllUsers(): Observable<string[]> {
@@ -99,25 +111,16 @@ export class ChatService {
     return observable;
   }
 
-  getBannedUsers(): Observable<any> {
-    const observable = new Observable(observer => {
-      this.socket.on('banned', (room, users, socket) => {
-        observer.next({ room: users, users: users, socket: socket });
-      });
-    });
-    return observable;
-  }
-
   leaveRoom(roomName: string) {
-    console.log('Roomname: part: ', roomName);
-    this.socket.emit('partroom', roomName); // BÆTA VIÐ Observable ??????
+    if (roomName !== undefined) {
+      this.socket.emit('partroom', roomName);
+    }
   }
 
   sendPrvMessage(_msg: string, _nick: string) {
     if (_nick.length < 1) {
       return;
     }
-    console.log('nicklen: ',_nick.length, 'nick: ' , _nick );
     const param = {
       nick: _nick,
       message: _msg
@@ -151,6 +154,26 @@ export class ChatService {
       user: _user['nick']
     };
     this.socket.emit('ban', param, (a, b) => {
+    });
+  }
+
+  getTopic(): Observable<any> {
+    const observable = new Observable(observer => {
+      this.socket.on('updatetopic', (room, topic, username) => {
+        observer.next({ room: room, topic: topic, username: username });
+      });
+    });
+    return observable;
+  }
+
+  setTopic(_roomName: string, _topic: string) {
+    console.log('setTopic: ', _roomName, _topic);
+    const param = {
+      room: _roomName,
+      topic: _topic
+    };
+    this.socket.emit('settopic', param, (a, b) => {
+      console.log(a, b);
     });
   }
 }

@@ -1,21 +1,3 @@
-<!--<p>
-  ROOMLIST
-</p>
-
-<ul class="list-group">
-  <li class="list-group-item" *ngFor="let room of rooms">
-    <a [routerLink]="['/rooms', room]" (click)="connectToRoom(room)">{{room}}</a>
-  </li>
-</ul>
-
-<input [(ngModel)]="newRoomName" />
-<button (click)="onNewRoom()">Add new room</button>
-
-
-<button (click)="disconnect()" class="btn btn-danger btn-sm" id="btn-chat">
-    disconnect</button>-->
-
-
 <div class="container">
   <div>
     <div class="panel panel-primary">
@@ -26,10 +8,15 @@
       </div>
       <div class="panel-body">
         <ul class="chat">
-          <li *ngFor="let room of rooms">
+          <li *ngFor="let room of newRooms">
             <div class="chat-body clearfix">
               <div class="header">
-                <a [routerLink]="['/rooms', room]" (click)="connectToRoom(room)">{{room}}</a>
+                <span *ngIf="room.banned === true" >
+                  <span>{{room.name}}</span><span class="label label-danger">BANNED</span>
+                </span>
+                <span *ngIf="room.banned === false" >
+                  <a [routerLink]="['/rooms', room.name]" (click)="connectToRoom(room.name)">{{room.name}}<span class="extra label label-default">{{room.topic}}</span></a>
+                </span>
               </div>
             </div>
           </li>

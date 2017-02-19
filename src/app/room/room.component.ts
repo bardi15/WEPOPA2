@@ -18,6 +18,8 @@ export class RoomComponent implements OnInit {
   messageSend: string;
   currUser: string;
   currUserIsOp: boolean;
+  currentTopic: string;
+  newTopic: string;
   constructor(private router: Router,
     private route: ActivatedRoute, private chatService: ChatService) {
     this.text = [];
@@ -25,11 +27,15 @@ export class RoomComponent implements OnInit {
   }
 
   ngOnInit() {
-    const id = this.route.snapshot.params['id'];
-    this.roomId = id;
+    this.roomId = this.route.snapshot.params['id'];
     this.getChat();
     this.getUsers();
     this.currUser = this.chatService.currUser;
+
+
+    // this.setCurrTopic('testdrive');
+    this.getCurrTopic();
+
   }
 
   getChat() {
@@ -37,6 +43,7 @@ export class RoomComponent implements OnInit {
     this.chatService.getChat().subscribe(lst => {
       this.clearArray(this.text);
       const roomName = lst['roomName'];
+      console.log('roomcomp getchat: ', roomName);
       const messages = lst['messages'];
       for (let i = messages.length - 1; i >= 0; i--) {
         const nickname = messages[i]['nick'];
@@ -60,15 +67,16 @@ export class RoomComponent implements OnInit {
     this.chatService.kickUser(this.roomId, username);
   }
 
-  // ban(username: string) {
-  //   this.chatService.banUser(this.roomId, username);
-  // }
+  ban(username: string) {
+    this.chatService.banUser(this.roomId, username);
+  }
 
   getUsers() {
     let usr;
     this.chatService.getUsers().subscribe(lst => {
       const users = lst['users'];
       const ops = lst['ops'];
+      console.log('getusers: room: ', lst['room']);
       this.clearArray(this.roomUsers);
       for (const key in ops) {
         if (this.isCurrentUser(ops[key])) {
@@ -102,11 +110,7 @@ export class RoomComponent implements OnInit {
   }
 
   removeFromRoom() {
-    const msg = {
-      nick: 'SERVER', timestamp: '', message: 'YOU HAVE BEEN REMOVED FROM THIS CHATROOM',
-      initials: 'S', currentuser: ''
-    };
-    this.text.push(msg);
+    this.serverMessage('YOU HAVE BEEN REMOVED FROM THIS CHATROOM');
   }
 
   leaveRoom() {
@@ -114,7 +118,25 @@ export class RoomComponent implements OnInit {
     this.router.navigate(['rooms']);
   }
 
-  // privateMsg(username: string) {
-  //   this.router.navigate(['privatemsg', username]);
-  // }
+  getCurrTopic() {
+    this.chatService.getTopic().subscribe(lst => {
+      // console.log('getCurrTopic', lst['topic']);
+      const topic = lst['topic'];
+      this.currentTopic = topic;
+      this.serverMessage(topic);
+    });
+  }
+
+  setCurrTopic() {
+    // console.log('setCurrTopic', topic);
+    this.chatService.setTopic(this.roomId, this.newTopic);
+  }
+
+  serverMessage(message: string) {
+    const msg = {
+      nick: 'SERVER', timestamp: '', message: message,
+      initials: 'S', currentuser: ''
+    };
+    this.text.push(msg);
+  }
 }

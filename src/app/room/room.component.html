@@ -3,7 +3,7 @@
         <div class="col-md-6" id="left">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <span class="glyphicon glyphicon-comment"></span> {{roomId}}
+                    <span class="glyphicon glyphicon-comment"></span> {{roomId}} - {{currentTopic}}
                     <div class="btn-group pull-right">
                     </div>
                 </div>
@@ -49,10 +49,8 @@
                         <li class="left clearfix" *ngFor="let usr of roomUsers">
                             <a>{{usr.nick}}</a>
                             <span *ngIf="usr.isOp === true" class="label label-success">OP</span>
-                            <!--<a class="operator">{{usr.nick}} (OP)</a>-->
 
                             <span *ngIf="usr.isOp === false">
-                                <!--<a>{{usr.nick}}</a>-->
                                 <span *ngIf="currUserIsOp === true" class="btn-group">
                                     <button class="label label-warning" (click)="kick(usr)">Kick</button>
                                     <button class="label label-danger" (click)="ban(usr)">Ban</button>
@@ -63,8 +61,17 @@
                     </ul>
                 </div>
                 <div class="panel-footer">
-                    <button (click)="leaveRoom()" class="btn btn-danger btn-block" id="btn-chat">
-                    Leave this Room</button>
+                    <div class="input-group">
+                        <input *ngIf="currUserIsOp === true" [(ngModel)]="newTopic" id="btn-input" type="text" class="form-control input-sm" placeholder={{currentTopic}} />
+                        <span class="input-group-btn" *ngIf="currUserIsOp === true">
+                            <button (click)="setCurrTopic()" class="btn btn-warning btn-sm" id="btn-chat">
+                                Change</button>
+                        </span>
+                            <span class="input-group-btn">
+                            <button (click)="leaveRoom()" class="btn btn-danger btn-sm" id="btn-chat">
+                                Leave Room</button>
+                        </span>
+                    </div>
                 </div>
             </div>
 
