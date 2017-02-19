@@ -27,11 +27,17 @@ export class RoomComponent implements OnInit {
 
   ngOnInit() {
     this.roomId = this.route.snapshot.params['id'];
+    this.currUser = this.chatService.currUser;
+    this.checkCurrUser();
     this.getChat();
     this.getUsers();
-    this.currUser = this.chatService.currUser;
     this.getCurrTopic();
+  }
 
+  checkCurrUser() {
+    if (this.currUser === undefined || this.currUser.length < 1) {
+      this.router.navigate(['login']);
+    }
   }
 
   getChat() {

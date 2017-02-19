@@ -16,6 +16,7 @@ export class PrivateMessagesComponent implements OnInit {
   constructor(private router: Router,
     private chatService: ChatService) {
     this.text = [];
+    this.currUser = this.chatService.currUser;
   }
 
   ngOnInit() {
@@ -26,6 +27,7 @@ export class PrivateMessagesComponent implements OnInit {
 
 // SENDS PRIVATE MESSAGE messageSend VARIABLE TAKES INPUT FROM USER
   prvmsg() {
+    this.text.unshift({ user: 'ME', message: this.messageSend });
     this.chatService.sendPrvMessage(this.messageSend, this.userSend);
   }
 
@@ -35,9 +37,7 @@ export class PrivateMessagesComponent implements OnInit {
       const username = lst['username'];
       const messages = lst['messages'];
       if (username.length > 0) {
-        console.log('')
-        this.text.push({ user: username, message: messages });
-        this.text.reverse();
+        this.text.unshift({ user: username, message: messages });
       }
     });
   }
