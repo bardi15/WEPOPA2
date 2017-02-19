@@ -9,10 +9,9 @@ import { Router } from '@angular/router';
 })
 export class RoomListComponent implements OnInit {
 
-  newRoomName: string;
-  rooms: any[];
-  newRooms: any[];
-  currUser: string;
+  newRoomName: string; // VARIABLE STORES MESSAGE TYPED INTO MESSAGEBOX
+  newRooms: any[]; // CONTAINS LIST ALL OF ROOMINFO OBJECTS
+  currUser: string; // NAME OF CURRENT SOCKET USER
   constructor(private chatService: ChatService,
     private router: Router) {
     this.currUser = this.chatService.currUser;
@@ -20,12 +19,10 @@ export class RoomListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.chatService.getRoomList().subscribe(lst => {
-      this.rooms = lst;
-    });
     this.getRoomList();
   }
 
+// GETS LIST OF ALL ROOMS
   getRoomList() {
     this.chatService.getRoomList().subscribe(lst => {
       this.clearArray(this.newRooms);
@@ -43,18 +40,22 @@ export class RoomListComponent implements OnInit {
     });
   }
 
+// CLEARS REFERENCED ARRAY
   clearArray(arr: any[]) {
     while (arr.length > 0) {
       arr.pop();
     }
   }
 
+// CONNECTS TO SELECTED ROOM
   onNewRoom() {
     if (this.newRoomName.length < 1) {
       return;
     }
     this.connectToRoom(this.newRoomName);
   }
+
+// CONNECTS TO A ROOM
   connectToRoom(roomName: string) {
     this.chatService.addRoom(roomName).subscribe(succeeded => {
       if (succeeded === true) {
@@ -63,6 +64,7 @@ export class RoomListComponent implements OnInit {
     });
   }
 
+// WORKS ONLY PARTIALLY, DISCONNECT FROM SERVER
   disconnect() {
     this.chatService.disconnect();
     this.router.navigate(['login']);

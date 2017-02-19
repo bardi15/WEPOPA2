@@ -10,16 +10,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class RoomComponent implements OnInit {
-  roomId: string;
-  messages: string[];
-  msg: any;
-  text: any[];
-  roomUsers: any[];
-  messageSend: string;
-  currUser: string;
-  currUserIsOp: boolean;
-  currentTopic: string;
-  newTopic: string;
+  roomId: string; // NAME OF CURRENT ROOM
+  msg: any; // PLACEHOLDER
+  text: any[]; // ALL MESSAGES IN CURRENT CHAT
+  roomUsers: any[]; // ALL USERS IN CURRENT ROOM
+  messageSend: string; // VARIABLE STORES MESSAGE TYPED INTO MESSAGEBOX
+  currUser: string; // USER ON CURRENT SOCKET
+  currUserIsOp: boolean; // IF USER IS OP IN CURRENT ROOM
+  currentTopic: string; // CURRENT SERVER TOPIC IN ROOM
+  newTopic: string; // VARIABLE STORES MESSAGE TYPED INTO MESSAGEBOX
   constructor(private router: Router,
     private route: ActivatedRoute, private chatService: ChatService) {
     this.text = [];
@@ -31,23 +30,18 @@ export class RoomComponent implements OnInit {
     this.getChat();
     this.getUsers();
     this.currUser = this.chatService.currUser;
-
-
-    // this.setCurrTopic('testdrive');
     this.getCurrTopic();
 
   }
 
   getChat() {
-    let msg;
     this.chatService.getChat().subscribe(lst => {
       this.clearArray(this.text);
       const roomName = lst['roomName'];
-      console.log('roomcomp getchat: ', roomName);
       const messages = lst['messages'];
       for (let i = messages.length - 1; i >= 0; i--) {
         const nickname = messages[i]['nick'];
-        msg = {
+        const msg = {
           nick: nickname, timestamp: messages[i]['timestamp'], message: messages[i]['message'],
           initials: messages[i]['nick'].slice(0, 1), currentuser: this.isCurrentUser(nickname)
         };
@@ -56,6 +50,7 @@ export class RoomComponent implements OnInit {
     });
   }
 
+// COMPARES USERNAME TO CURRENT USER
   isCurrentUser(username: string): boolean {
     if (username === this.currUser) {
       return true;
@@ -63,20 +58,22 @@ export class RoomComponent implements OnInit {
     return false;
   }
 
+// KICK FROM ROOM
   kick(username: string) {
     this.chatService.kickUser(this.roomId, username);
   }
 
+// BAN FROM ROOM
   ban(username: string) {
     this.chatService.banUser(this.roomId, username);
   }
 
+// GETS USERS IN CURRENT ROOM
   getUsers() {
     let usr;
     this.chatService.getUsers().subscribe(lst => {
       const users = lst['users'];
       const ops = lst['ops'];
-      console.log('getusers: room: ', lst['room']);
       this.clearArray(this.roomUsers);
       for (const key in ops) {
         if (this.isCurrentUser(ops[key])) {
@@ -93,14 +90,16 @@ export class RoomComponent implements OnInit {
         this.removeFromRoom();
       }
     });
-
   }
+
+// CLEARS REFRENCED ARRAY
   clearArray(arr: any[]) {
     while (arr.length > 0) {
       arr.pop();
     }
   }
 
+// SEND MESSAGE TO CURRENT CHATROOM
   postMessage() {
     if (this.messageSend === undefined || this.messageSend.length < 1 || this.messageSend.length > 200) {
       return;
@@ -109,34 +108,38 @@ export class RoomComponent implements OnInit {
     this.messageSend = '';
   }
 
+
+// SENDS MESSAGE IF USER HAS BEEN REMOVED
   removeFromRoom() {
     this.serverMessage('YOU HAVE BEEN REMOVED FROM THIS CHATROOM');
   }
 
+// LEAVES ROOM AND NAVIGATES TO ROOMLIST
   leaveRoom() {
     this.chatService.leaveRoom(this.roomId);
     this.router.navigate(['rooms']);
   }
 
+// GETS TOPIC OF CURRENT ROOM
   getCurrTopic() {
     this.chatService.getTopic().subscribe(lst => {
-      // console.log('getCurrTopic', lst['topic']);
       const topic = lst['topic'];
       this.currentTopic = topic;
       this.serverMessage(topic);
     });
   }
 
+// SETS TOPIC OF CURRENT ROOM (ONLY OP)
   setCurrTopic() {
-    // console.log('setCurrTopic', topic);
     this.chatService.setTopic(this.roomId, this.newTopic);
   }
 
+// SENDS SERVER MESSAGE
   serverMessage(message: string) {
     const msg = {
-      nick: 'SERVER', timestamp: '', message: message,
+      nick: 'SERVER', timestamp: 'NOW', message: message,
       initials: 'S', currentuser: ''
     };
-    this.text.push(msg);
+    this.text.unshift(msg);
   }
 }

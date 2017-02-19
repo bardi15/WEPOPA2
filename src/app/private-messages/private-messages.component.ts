@@ -8,13 +8,11 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./private-messages.component.css']
 })
 export class PrivateMessagesComponent implements OnInit {
-  // id: number;
-  text: any[];
-  messageSend: string;
-  userSend: string;
+  text: any[]; // ARRAY OF ALL PRIVATE MESSAGES THIS USER HAS RECIEVED
+  messageSend: string; // VARIABLE STORES MESSAGE TYPED INTO MESSAGEBOX
+  userSend: string; // NAME OF USER RECIVEING MESSAGES
   currUser: string;
-  allUsers = new Array<string>();
-  selectedUser: string;
+  allUsers = new Array<string>(); // ARRAY OF ALL USERS
   constructor(private router: Router,
     private chatService: ChatService) {
     this.text = [];
@@ -22,35 +20,36 @@ export class PrivateMessagesComponent implements OnInit {
 
   ngOnInit() {
     this.getAllUsers();
-    // const id = this.route.snapshot.params['id'];
-    // this.addToUserList(id);
-    // this.id = id;
     this.getprvmsgs();
     this.currUser = this.chatService.currUser;
   }
 
+// SENDS PRIVATE MESSAGE messageSend VARIABLE TAKES INPUT FROM USER
   prvmsg() {
-    // console.log('this.userSend:', this.userSend);
     this.chatService.sendPrvMessage(this.messageSend, this.userSend);
   }
 
+// GETS ALL PRIVATE MESSAGES TO THIS USER
   getprvmsgs() {
     this.chatService.getPrvMessage().subscribe(lst => {
       const username = lst['username'];
       const messages = lst['messages'];
-      if (username.length > 1) {
+      if (username.length > 0) {
+        console.log('')
         this.text.push({ user: username, message: messages });
         this.text.reverse();
       }
     });
   }
 
+// ADDS VARIABLE TO LIST ONLY IF IT IS NOT ALREADY IN THE LIST
   addToUserList(username: string) {
     if (!this.allUsers.some((x => x === username))) {
       this.allUsers.push(username);
     };
   }
 
+// EMITS TO SERVER TO RECIEVE USERLIST, AND ADDS THEM TO LIST
   getAllUsers() {
     this.chatService.serverEmitUsers();
     this.chatService.getAllUsers().subscribe(lst => {

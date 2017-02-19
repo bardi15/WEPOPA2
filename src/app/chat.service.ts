@@ -29,13 +29,11 @@ export class ChatService {
     const obs = new Observable(observer => {
       this.socket.emit('rooms');
       this.socket.on('roomlist', (lst) => {
-        console.log(lst);
         const rmArr: any[] = [];
         for (const x in lst) {
           if (lst.hasOwnProperty(x)) {
             const val = lst[x];
-            const rooms = {name: x, banned: val['banned'], locked: val['locked'], ops: val['ops'], password: val['password'], topic: val['topic'], users: val['users']};
-            console.log(rooms);
+            const rooms = { name: x, banned: val['banned'], locked: val['locked'], ops: val['ops'], password: val['password'], topic: val['topic'], users: val['users'] };
             rmArr.push(rooms);
           }
         }
@@ -64,19 +62,19 @@ export class ChatService {
     };
     this.socket.emit('sendmsg', param);
   }
+
   getChat(): Observable<any> {
     let response;
     const observable = new Observable(observer => {
       this.socket.on('updatechat', (room, messageHistory) => {
         for (const x in room) {
-          console.log('x: ', x, 'lsx: ', room[x]);
         }
-        console.log('getChat service : ', room);
         observer.next(response = { roomName: room, messages: messageHistory });
       });
     });
     return observable;
   }
+
   getUsers(): Observable<any> {
     this.socket.emit('users');
     const observable = new Observable(observer => {
@@ -98,7 +96,6 @@ export class ChatService {
   getAllUsers(): Observable<string[]> {
     const observable = new Observable(observer => {
       this.socket.on('userlist', lst => {
-        // console.log('lst in chatservice: ', lst);
         const strArr: string[] = [];
         for (const x in lst) {
           if (lst.hasOwnProperty(x)) {
@@ -167,13 +164,11 @@ export class ChatService {
   }
 
   setTopic(_roomName: string, _topic: string) {
-    console.log('setTopic: ', _roomName, _topic);
     const param = {
       room: _roomName,
       topic: _topic
     };
     this.socket.emit('settopic', param, (a, b) => {
-      console.log(a, b);
     });
   }
 }
