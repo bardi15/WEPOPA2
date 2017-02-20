@@ -73,9 +73,9 @@ export class BotsService {
     if (this.socketList.length > 0) {
       let count = Math.floor(Math.random() * 60 * 30);
       setTimeout(() => {
-        let instance = this.getRandom(this.socketList); // this.socketList[Math.floor(Math.random() * this.socketList.length)];
+        let instance = this.getRandom(this.socketList);
         if (instance.room !== undefined || instance.instance !== undefined) {
-          let message = this.getRandom(posts); // posts[Math.floor(Math.random() * posts.length)];
+          let message = this.getRandom(posts);
           this.sendMessages(instance.room, message, instance.instance);
         }
       }, count);
@@ -83,7 +83,7 @@ export class BotsService {
   }
 
   joinChats(instance: any) {
-    let room = this.getRandom(this.chatRooms); // this.chatRooms[Math.floor(Math.random() * this.chatRooms.length)];
+    let room = this.getRandom(this.chatRooms);
     this.createRoom(room, instance);
     return room;
   }
@@ -92,7 +92,7 @@ export class BotsService {
     let instance = this.newSocket();
     for (const x in this.users) {
       this.login(this.users[x], instance);
-      let room = this.getRandom(this.chatRooms); //this.chatRooms[Math.floor(Math.random() * this.chatRooms.length)];
+      let room = this.getRandom(this.chatRooms);
       this.createRoom(room, instance);
     };
   }
