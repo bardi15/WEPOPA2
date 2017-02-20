@@ -141,7 +141,7 @@ export class RoomComponent implements OnInit {
   }
 
 // SENDS SERVER MESSAGE
-  serverMessage(message: string) {
+  private serverMessage(message: string) {
     const msg = {
       nick: 'SERVER', timestamp: 'NOW', message: message,
       initials: 'S', currentuser: ''
