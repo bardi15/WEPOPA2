@@ -58,9 +58,10 @@ export class BotsService {
     this.login(name, instance);
     this.createRoom(roomName, instance);
     this.socketList.push({ instance: instance, room: roomName });
+    this.respondToPrvMsg(instance);
   }
 
-  makeid(): string {
+  private makeid(): string {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < 5; i++)
@@ -72,9 +73,9 @@ export class BotsService {
     if (this.socketList.length > 0) {
       let count = Math.floor(Math.random() * 60 * 30);
       setTimeout(() => {
-        let instance = this.socketList[Math.floor(Math.random() * this.socketList.length)];
+        let instance = this.getRandom(this.socketList); // this.socketList[Math.floor(Math.random() * this.socketList.length)];
         if (instance.room !== undefined || instance.instance !== undefined) {
-          let message = posts[Math.floor(Math.random() * posts.length)];
+          let message = this.getRandom(posts); // posts[Math.floor(Math.random() * posts.length)];
           this.sendMessages(instance.room, message, instance.instance);
         }
       }, count);
@@ -82,7 +83,7 @@ export class BotsService {
   }
 
   joinChats(instance: any) {
-    let room = this.chatRooms[Math.floor(Math.random() * this.chatRooms.length)];
+    let room = this.getRandom(this.chatRooms); // this.chatRooms[Math.floor(Math.random() * this.chatRooms.length)];
     this.createRoom(room, instance);
     return room;
   }
@@ -91,12 +92,12 @@ export class BotsService {
     let instance = this.newSocket();
     for (const x in this.users) {
       this.login(this.users[x], instance);
-      let room = this.chatRooms[Math.floor(Math.random() * this.chatRooms.length)];
+      let room = this.getRandom(this.chatRooms); //this.chatRooms[Math.floor(Math.random() * this.chatRooms.length)];
       this.createRoom(room, instance);
     };
   }
 
-  getRandom(list: any[]) {
+  private getRandom(list: any[]) {
     let offset = Math.floor(Math.random() * list.length);
     return list[offset];
   }
@@ -144,6 +145,11 @@ export class BotsService {
   checkPrvMessage() {
     for (const x in this.socketList) {
       const instance = this.socketList[x].instance;
+      this.respondToPrvMsg(instance);
+    }
+  }
+
+  respondToPrvMsg(instance: any) {
       this.getPrvMessage(instance).subscribe(lst => {
         const sender = lst['username'];
         if (sender !== undefined && sender !== null) {
@@ -151,7 +157,6 @@ export class BotsService {
           this.sendPrvMessage(message, sender, instance);
         }
       });
-    }
   }
 
   sendPrvMessage(_msg: string, _nick: string, socket: any) {

@@ -150,14 +150,14 @@ export class RoomComponent implements OnInit {
   }
 
 // PRETTIFIES TIME
-  fixTimeString(time: any): string {
+  private fixTimeString(time: any): string {
     let fTime = new Date(time);
     let strTime = fTime.getHours() + ':' + fTime.getMinutes();
     return strTime;
   }
 
 // CLEARS REFRENCED ARRAY
-  clearArray(arr: any[]) {
+  private clearArray(arr: any[]) {
     while (arr.length > 0) {
       arr.pop();
     }

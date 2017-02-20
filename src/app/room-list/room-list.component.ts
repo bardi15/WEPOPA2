@@ -46,7 +46,7 @@ export class RoomListComponent implements OnInit {
   }
 
 // CLEARS REFERENCED ARRAY
-  clearArray(arr: any[]) {
+  private clearArray(arr: any[]) {
     while (arr.length > 0) {
       arr.pop();
     }
