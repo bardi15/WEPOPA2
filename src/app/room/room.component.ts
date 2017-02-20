@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { BotsService } from '../bots.service';
 
 
 @Component({
@@ -19,10 +20,12 @@ export class RoomComponent implements OnInit {
   currUserIsOp: boolean; // IF USER IS OP IN CURRENT ROOM
   currentTopic: string; // CURRENT SERVER TOPIC IN ROOM
   newTopic: string; // VARIABLE STORES MESSAGE TYPED INTO MESSAGEBOX
+  botsAreActive: boolean;
   constructor(private router: Router,
-    private route: ActivatedRoute, private chatService: ChatService) {
+    private route: ActivatedRoute, private chatService: ChatService, private botsService: BotsService ) {
     this.text = [];
     this.roomUsers = [];
+    this.botsAreActive = this.botsService.botsAreActive;
   }
 
   ngOnInit() {
@@ -38,6 +41,11 @@ export class RoomComponent implements OnInit {
     if (this.currUser === undefined || this.currUser.length < 1) {
       this.router.navigate(['login']);
     }
+  }
+
+  addBotToCurrentChat() {
+    console.log(this.botsAreActive);
+    this.botsService.addOneBotToRoom(this.roomId);
   }
 
   getChat() {

@@ -14,12 +14,14 @@ export class BotsService {
   converse: string[];
   users: string[];
   chatRooms: string[];
+  botsAreActive: boolean;
   constructor(private http: Http) {
     this.socketList = [];
     this.converse = [];
     this.users = ['Leanne Graham', 'Ervin Howell', 'Clementine Bauch', 'Patricia Lebsack',
       'Chelsey Dietrich', 'Mrs. Dennis Schulist', 'Kurtis Weissnat', 'Glenna Reichert', 'Clementina DuBuque'];
     this.chatRooms = ['Warcraft chat', 'Russia Only', 'Left 4 Dead', 'Fork in the Road'];
+    this.botsAreActive = false;
   }
 
   initiate() {
@@ -29,6 +31,7 @@ export class BotsService {
       let room = this.joinChats(instance);
       this.socketList.push({ instance: instance, room: room });
     }
+    this.botsAreActive = true;
   }
 
   botPosts() {
@@ -40,6 +43,24 @@ export class BotsService {
       };
       this.infiniteLoop(posts);
     });
+  }
+
+  addOneBotToRoom(roomName: string) {
+    let name = 'BOT_' + this.makeid();
+    let instance = this.newSocket();
+    this.login(name, instance);
+    this.createRoom(roomName, instance);
+    this.socketList.push({ instance: instance, room: roomName });
+  }
+
+  makeid(): string {
+    let text = '';
+    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < 5; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
   }
 
   infiniteLoop(posts: string[]) {
