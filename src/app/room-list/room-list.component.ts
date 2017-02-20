@@ -53,7 +53,7 @@ export class RoomListComponent implements OnInit {
   startBots() {
     this.botsService.initiate();
     // this.BotSendMessages();
-    Observable.interval(100 * 60).subscribe(x => {
+    Observable.interval(20 * 60).subscribe(x => {
       this.botsService.botPosts();
     });
   }

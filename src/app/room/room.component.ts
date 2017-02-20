@@ -41,7 +41,7 @@ export class RoomComponent implements OnInit {
   }
 
   getChat() {
-    this.chatService.getChat().subscribe(lst => {
+    this.chatService.getChat(this.roomId).subscribe(lst => {
       this.clearArray(this.text);
       const roomName = lst['roomName'];
       const messages = lst['messages'];

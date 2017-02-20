@@ -63,13 +63,15 @@ export class ChatService {
     this.socket.emit('sendmsg', param);
   }
 
-  getChat(): Observable<any> {
+  getChat(currRoom: string): Observable<any> {
     let response;
     const observable = new Observable(observer => {
       this.socket.on('updatechat', (room, messageHistory) => {
-        for (const x in room) {
+        if (currRoom === room) {
+          for (const x in room) {
+          }
+          observer.next(response = { roomName: room, messages: messageHistory });
         }
-        observer.next(response = { roomName: room, messages: messageHistory });
       });
     });
     return observable;
