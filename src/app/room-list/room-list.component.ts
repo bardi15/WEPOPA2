@@ -15,6 +15,7 @@ export class RoomListComponent implements OnInit {
   newRoomName: string; // VARIABLE STORES MESSAGE TYPED INTO MESSAGEBOX
   newRooms: any[]; // CONTAINS LIST ALL OF ROOMINFO OBJECTS
   currUser: string; // NAME OF CURRENT SOCKET USER
+  botsAreOn: boolean;
   constructor(private chatService: ChatService,
     private router: Router, private botsService: BotsService) {
     this.currUser = this.chatService.currUser;
@@ -23,6 +24,7 @@ export class RoomListComponent implements OnInit {
 
   ngOnInit() {
     this.getRoomList();
+    this.botsAreOn = this.botsService.botStatus();
   }
 
 // GETS LIST OF ALL ROOMS
@@ -52,7 +54,7 @@ export class RoomListComponent implements OnInit {
 
   startBots() {
     this.botsService.initiate();
-    // this.BotSendMessages();
+    this.botsAreOn = true;
     Observable.interval(20 * 60).subscribe(x => {
       this.botsService.botPosts();
     });
@@ -71,6 +73,8 @@ export class RoomListComponent implements OnInit {
     this.chatService.addRoom(roomName).subscribe(succeeded => {
       if (succeeded === true) {
         this.router.navigate(['rooms', roomName]);
+      } else {
+        this.router.navigate(['login']);
       }
     });
   }

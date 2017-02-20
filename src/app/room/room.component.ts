@@ -44,7 +44,6 @@ export class RoomComponent implements OnInit {
   }
 
   addBotToCurrentChat() {
-    console.log(this.botsAreActive);
     this.botsService.addOneBotToRoom(this.roomId);
   }
 

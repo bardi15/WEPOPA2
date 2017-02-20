@@ -34,6 +34,10 @@ export class BotsService {
     this.botsAreActive = true;
   }
 
+  botStatus(): boolean {
+    return this.botsAreActive;
+  }
+
   botPosts() {
     this.getData('posts').then(data => {
       let posts = [];
@@ -41,7 +45,7 @@ export class BotsService {
         posts.push(data[x]['title']);
         posts.push(data[x]['body']);
       };
-      this.infiniteLoop(posts);
+      this.randomMessageSend(posts);
     });
   }
 
@@ -55,21 +59,17 @@ export class BotsService {
 
   makeid(): string {
     let text = '';
-    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < 5; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
-
     return text;
   }
 
-  infiniteLoop(posts: string[]) {
-    // console.log('ok');
+  randomMessageSend(posts: string[]) {
     if (this.socketList.length > 0) {
       let count = Math.floor(Math.random() * 60 * 30);
       setTimeout(() => {
         let instance = this.socketList[Math.floor(Math.random() * this.socketList.length)];
-        // console.log(instance);
         if (instance.room !== undefined || instance.instance !== undefined) {
           let message = posts[Math.floor(Math.random() * posts.length)];
           this.sendMessages(instance.room, message, instance.instance);
@@ -113,7 +113,6 @@ export class BotsService {
     socket.on('connect', function () {
     });
     return socket;
-    // this.socketList.push(socket);
   }
 
   login(userName: string, socket: any) {
@@ -122,12 +121,7 @@ export class BotsService {
   }
 
   createRoom(roomName: string, socket: any) {
-    const param = {
-      room: roomName
-    };
-    // console.log('roomName: ', roomName, ' socket: ', socket);
-    socket.emit('joinroom', param, (a, b) => {
-      // console.log(a, b);
+    socket.emit('joinroom', {room: roomName}, (a, b) => {
     });
   }
 
@@ -136,7 +130,6 @@ export class BotsService {
       roomName: roomName,
       msg: message
     };
-    console.log('message: ', param);
     socket.emit('sendmsg', param);
   }
 }
