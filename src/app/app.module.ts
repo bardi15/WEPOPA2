@@ -10,6 +10,7 @@ import { RoomComponent } from './room/room.component';
 import { ChatService } from './chat.service';
 // import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { PrivateMessagesComponent } from './private-messages/private-messages.component';
+import { BotsService } from './bots.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { PrivateMessagesComponent } from './private-messages/private-messages.co
       component: PrivateMessagesComponent
     }])
   ],
-  providers: [ChatService],
+  providers: [ChatService, BotsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 export class ChatService {
   socket: any;
   currUser: string;
-  selectedUser: string;
+  // selectedUser: string;
 
   constructor() {
     this.socket = io('http://localhost:8080/');
@@ -16,7 +16,7 @@ export class ChatService {
 
   login(userName: string): Observable<boolean> {
     this.currUser = userName;
-    this.selectedUser = '';
+    // this.selectedUser = '';
     const observable = new Observable(observer => {
       this.socket.emit('adduser', userName, succeeded => {
         observer.next(succeeded);

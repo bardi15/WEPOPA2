@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { Router } from '@angular/router';
+import { BotsService } from '../bots.service';
+import { Observable } from 'rxjs/Rx';
+
 
 @Component({
   selector: 'app-room-list',
@@ -13,7 +16,7 @@ export class RoomListComponent implements OnInit {
   newRooms: any[]; // CONTAINS LIST ALL OF ROOMINFO OBJECTS
   currUser: string; // NAME OF CURRENT SOCKET USER
   constructor(private chatService: ChatService,
-    private router: Router) {
+    private router: Router, private botsService: BotsService) {
     this.currUser = this.chatService.currUser;
     this.newRooms = [];
   }
@@ -45,6 +48,14 @@ export class RoomListComponent implements OnInit {
     while (arr.length > 0) {
       arr.pop();
     }
+  }
+
+  startBots() {
+    this.botsService.initiate();
+    // this.BotSendMessages();
+    Observable.interval(100 * 60).subscribe(x => {
+      this.botsService.botPosts();
+    });
   }
 
 // CONNECTS TO SELECTED ROOM
