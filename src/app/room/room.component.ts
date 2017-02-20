@@ -54,8 +54,9 @@ export class RoomComponent implements OnInit {
       const messages = lst['messages'];
       for (let i = messages.length - 1; i >= 0; i--) {
         const nickname = messages[i]['nick'];
+        const time = this.fixTimeString(messages[i]['timestamp']);
         const msg = {
-          nick: nickname, timestamp: messages[i]['timestamp'], message: messages[i]['message'],
+          nick: nickname, timestamp: time, message: messages[i]['message'],
           initials: messages[i]['nick'].slice(0, 1), currentuser: this.isCurrentUser(nickname)
         };
         this.text.push(msg);
@@ -105,13 +106,6 @@ export class RoomComponent implements OnInit {
     });
   }
 
-// CLEARS REFRENCED ARRAY
-  clearArray(arr: any[]) {
-    while (arr.length > 0) {
-      arr.pop();
-    }
-  }
-
 // SEND MESSAGE TO CURRENT CHATROOM
   postMessage() {
     if (this.messageSend === undefined || this.messageSend.length < 1 || this.messageSend.length > 200) {
@@ -120,7 +114,6 @@ export class RoomComponent implements OnInit {
     this.chatService.sendMessage(this.roomId, this.messageSend);
     this.messageSend = '';
   }
-
 
 // SENDS MESSAGE IF USER HAS BEEN REMOVED
   removeFromRoom() {
@@ -154,5 +147,19 @@ export class RoomComponent implements OnInit {
       initials: 'S', currentuser: ''
     };
     this.text.unshift(msg);
+  }
+
+// PRETTIFIES TIME
+  fixTimeString(time: any): string {
+    let fTime = new Date(time);
+    let strTime = fTime.getHours() + ':' + fTime.getMinutes();
+    return strTime;
+  }
+
+// CLEARS REFRENCED ARRAY
+  clearArray(arr: any[]) {
+    while (arr.length > 0) {
+      arr.pop();
+    }
   }
 }

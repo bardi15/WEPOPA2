@@ -145,7 +145,6 @@ export class BotsService {
     for (const x in this.socketList) {
       const instance = this.socketList[x].instance;
       this.getPrvMessage(instance).subscribe(lst => {
-        console.log('prvmsg: ', lst);
         const sender = lst['username'];
         if (sender !== undefined && sender !== null) {
           const message = this.getRandom(this.responsesMsg);
