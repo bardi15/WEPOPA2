@@ -15,12 +15,14 @@ export class BotsService {
   users: string[];
   chatRooms: string[];
   botsAreActive: boolean;
+  responsesMsg: string[];
   constructor(private http: Http) {
     this.socketList = [];
     this.converse = [];
     this.users = ['Leanne Graham', 'Ervin Howell', 'Clementine Bauch', 'Patricia Lebsack',
       'Chelsey Dietrich', 'Mrs. Dennis Schulist', 'Kurtis Weissnat', 'Glenna Reichert', 'Clementina DuBuque'];
     this.chatRooms = ['Warcraft chat', 'Russia Only', 'Left 4 Dead', 'Fork in the Road'];
+    this.responsesMsg = ['Huh?', 'I dont understand', 'I dont speak english', 'FTW', 'smuuu'];
     this.botsAreActive = false;
   }
 
@@ -32,6 +34,7 @@ export class BotsService {
       this.socketList.push({ instance: instance, room: room });
     }
     this.botsAreActive = true;
+    this.checkPrvMessage();
   }
 
   botStatus(): boolean {
@@ -93,6 +96,11 @@ export class BotsService {
     };
   }
 
+  getRandom(list: any[]) {
+    let offset = Math.floor(Math.random() * list.length);
+    return list[offset];
+  }
+
   getData(part: string): any {
     return this.http.get(this.data + part)
       .map(this.extractData).toPromise();
@@ -131,5 +139,41 @@ export class BotsService {
       msg: message
     };
     socket.emit('sendmsg', param);
+  }
+
+  checkPrvMessage() {
+    for (const x in this.socketList) {
+      const instance = this.socketList[x].instance;
+      this.getPrvMessage(instance).subscribe(lst => {
+        console.log('prvmsg: ', lst);
+        const sender = lst['username'];
+        if (sender !== undefined && sender !== null) {
+          const message = this.getRandom(this.responsesMsg);
+          this.sendPrvMessage(message, sender, instance);
+        }
+      });
+    }
+  }
+
+  sendPrvMessage(_msg: string, _nick: string, socket: any) {
+    if (_nick.length < 1) {
+      return;
+    }
+    const param = {
+      nick: _nick,
+      message: _msg
+    };
+    socket.emit('privatemsg', param, (a, b) => {
+    });
+  }
+
+  getPrvMessage(socket: any): Observable<any> {
+    let response;
+    const observable = new Observable(observer => {
+      socket.on('recv_privatemsg', (userName, message) => {
+        observer.next(response = { username: userName, messages: message });
+      });
+    });
+    return observable;
   }
 }
